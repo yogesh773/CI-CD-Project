@@ -1,4 +1,4 @@
-name: Build and Deploy to Azure Web App - Wa-testing
+name: Deploy static site to Azure Web App - Wa-testing
 
 on:
   push:
@@ -12,26 +12,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # 👉 Add build steps depending on your stack
-      # Example for Node.js:
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-      - run: npm install
-      - run: npm run build --if-present
-
-      # Example for PHP/Laravel:
-      # - name: Setup PHP
-      #   uses: shivammathur/setup-php@v2
-      #   with:
-      #     php-version: '8.2'
-      # - run: composer install --no-dev --optimize-autoloader
-
+      # No build step needed for static HTML site
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: app
+          name: static-site
           path: .
 
   deploy:
@@ -41,7 +26,7 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
-          name: app
+          name: static-site
 
       - name: Login to Azure
         uses: azure/login@v2
