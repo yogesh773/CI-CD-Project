@@ -7,30 +7,32 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: static-site
-          path: .
-
   deploy:
     runs-on: ubuntu-latest
-    needs: build
     steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: static-site
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
+      # Login to Azure using Service Principal JSON
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          creds: |
+            {
+              "clientId": "${{ secrets.AZUREAPPSERVICE_CLIENTID_029221B580EE4B54A002F5C26214E995 }}",
+              "clientSecret": "${{ secrets.AZUREAPPSERVICE_CLIENTSECRET }}",
+              "subscriptionId": "${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_02D0DF14A6D844DE8619CB37E07C7B1C }}",
+              "tenantId": "${{ secrets.AZUREAPPSERVICE_TENANTID_6132AFBE9B934018948F725036B30B1B }}",
+              "activeDirectoryEndpointUrl": "https://login.microsoftonline.com",
+              "resourceManagerEndpointUrl": "https://management.azure.com/",
+              "activeDirectoryGraphResourceId": "https://graph.windows.net/",
+              "sqlManagementEndpointUrl": "https://management.core.windows.net:8443/",
+              "galleryEndpointUrl": "https://gallery.azure.com/",
+              "managementEndpointUrl": "https://management.core.windows.net/"
+            }
 
-      - name: Deploy to Azure Web App
+      # Deploy all files in the repo to Azure App Service
+      - name: Deploy static site to Azure Web App
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'Wa-testing'
