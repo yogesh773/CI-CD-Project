@@ -3,32 +3,32 @@ name: Deploy static site to Azure Web App - Wa-testing
 on:
   push:
     branches:
-      - main        # Automatically deploy when code is pushed to main
-  workflow_dispatch: # Optional manual trigger
+      - main
+  workflow_dispatch:
+
+permissions:
+  id-token: write       # Required for OIDC
+  contents: read
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout your repository
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Step 2: Login to Azure using Service Principal (secrets)
-      - name: Login to Azure
+      - name: Login to Azure using OIDC
         uses: azure/login@v2
         with:
-          auth-type: SERVICE_PRINCIPAL
+          auth-type: OIDC
           client-id: ${{ secrets.AZURE_CLIENTID }}
           tenant-id: ${{ secrets.AZURE_TENANTID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTIONID }}
-          client-secret: ${{ secrets.AZURE_CLIENTSECRET }}
 
-      # Step 3: Deploy static site to Azure Web App
       - name: Deploy static site to Azure Web App
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'Wa-testing'       # Your Azure App Service name
-          slot-name: 'Production'      # Or any deployment slot
+          app-name: 'Wa-testing'
+          slot-name: 'Production'
           package: .
