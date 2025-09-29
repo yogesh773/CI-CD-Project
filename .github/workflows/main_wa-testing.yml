@@ -10,7 +10,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       # No build step needed for static HTML site
       - name: Upload artifact
@@ -34,6 +35,7 @@ jobs:
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_029221B580EE4B54A002F5C26214E995 }}
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_6132AFBE9B934018948F725036B30B1B }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_02D0DF14A6D844DE8619CB37E07C7B1C }}
+          client-secret: ${{ secrets.AZUREAPPSERVICE_CLIENTSECRET }}
 
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
@@ -41,4 +43,3 @@ jobs:
           app-name: 'Wa-testing'
           slot-name: 'Production'
           package: .
-
