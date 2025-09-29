@@ -24,7 +24,7 @@ jobs:
           auth-type: OIDC
           client-id: ${{ secrets.AZURE_CLIENT_ID_762681b2-f77b-452c-a50c-3bcff6c5f1f4 }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID_3e1e0d01-08b0-4362-aa17-224e849224f1 }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID_60822fda-c35a-4f73-a010-956060e8b0b7 }}
 
       - name: Deploy static site to Azure Web App
         uses: azure/webapps-deploy@v3
@@ -32,3 +32,4 @@ jobs:
           app-name: 'Wa-testing'
           slot-name: 'Production'
           package: .
+
